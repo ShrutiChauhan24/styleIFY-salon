@@ -38,6 +38,7 @@ const WhyChooseUs = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Header Animation
       gsap.from(".why-header", {
         y: 40,
         opacity: 0,
@@ -46,24 +47,31 @@ const WhyChooseUs = () => {
         scrollTrigger: {
           trigger: ".why-header",
           start: "top 85%",
+          toggleActions: "play none none none"
         }
       });
 
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.from(card, {
-            y: index % 2 === 0 ? 40 : 70,
-            opacity: 0,
-            duration: 1.2,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-            }
-          });
-        }
+      // Targets all card elements securely using a GSAP selector engine utility
+      const cards = gsap.utils.toArray(cardsRef.current).filter(Boolean);
+      
+      cards.forEach((card, index) => {
+        gsap.from(card, {
+          y: index % 2 === 0 ? 40 : 70,
+          opacity: 0,
+          duration: 1.2,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 92%", // Slightly deeper entry point optimized for small phone viewports
+            toggleActions: "play none none none"
+          }
+        });
       });
+
+      // Crucial fix: Forces GSAP to recalculate positions safely after the DOM stabilizes
+      ScrollTrigger.refresh();
     }, sectionRef);
+
     return () => ctx.revert();
   }, []);
 
