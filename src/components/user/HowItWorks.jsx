@@ -1,15 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Scissors, Calendar, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const HowItWorks = () => {
-  const sectionRef = useRef(null);
-  const stepsRef = useRef([]);
-
   const steps = [
     {
       number: "01",
@@ -31,49 +25,44 @@ const HowItWorks = () => {
     }
   ];
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header Animation
-      gsap.from(".how-header", {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".how-header",
-          start: "top 85%",
-        }
-      }); 
+  // Motion Variants matching your exact GSAP physics/timing specs
+  const headerVariants = {
+    hidden: { y: 40, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] } // power3.out equivalent
+    }
+  };
 
-      // Steps Staggered Animation
-      stepsRef.current.forEach((step, index) => {
-        if (step) {
-          gsap.from(step, {
-            y: 40,
-            opacity: 0,
-            duration: 0.8,
-            delay: index * 0.15,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: step,
-              start: "top 90%",
-            }
-          });
-        }
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+  const stepVariants = {
+    hidden: { y: 40, opacity: 0 },
+    visible: (index) => ({
+      y: 0,
+      opacity: 1,
+      transition: { 
+        duration: 0.8, 
+        delay: index * 0.15, // Preserves your explicit layout stagger calculation
+        ease: [0.25, 0.46, 0.45, 0.94] // power2.out equivalent
+      }
+    })
+  };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#0f0f0f] py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden">
+    <section className="relative bg-[#0f0f0f] py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-8 md:px-12 lg:px-16 overflow-hidden">
       {/* Background Decorative Element */}
       <div className="absolute top-0 right-0 w-72 sm:w-96 h-72 sm:h-96 bg-[#FF1B6B]/5 blur-[80px] sm:blur-[120px] rounded-full -mr-36 -mt-36 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Header Section */}
-        <div className="how-header text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+        <motion.div 
+          variants={headerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="how-header text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
+        >
           <span className="text-[#FF1B6B] text-[10px] sm:text-xs font-semibold uppercase tracking-widest block mb-2">Process</span>
           <h2 className="text-white font-bold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4">
             How It <span className="text-[#FF1B6B] italic font-serif">Works</span>
@@ -81,7 +70,7 @@ const HowItWorks = () => {
           <p className="text-gray-400 text-xs sm:text-sm md:text-base max-w-md mx-auto leading-relaxed px-2">
             Book your professional salon appointment in just 3 simple steps.
           </p>
-        </div>
+        </motion.div>
 
         {/* Process Flow - Clean layout stack that turns side-by-side at lg breakpoint */}
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10 sm:gap-12 lg:gap-6 xl:gap-8 relative w-full">
@@ -90,9 +79,13 @@ const HowItWorks = () => {
           <div className="hidden lg:block absolute top-16 xl:top-20 left-[10%] w-[80%] h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent z-0" />
 
           {steps.map((step, index) => (
-            <div
+            <motion.div
               key={index}
-              ref={el => stepsRef.current[index] = el}
+              custom={index}
+              variants={stepVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
               className="group relative z-10 flex flex-col items-center text-center max-w-[280px] sm:max-w-xs md:max-w-sm lg:w-[31%] w-full"
             >
               {/* Outer Step Circle Wrapper */}
@@ -123,16 +116,16 @@ const HowItWorks = () => {
               <p className="text-gray-400 text-xs sm:text-sm xl:text-base leading-relaxed">
                 {step.desc}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Final Flow Trigger Call-to-Action Button */}
         <div className="mt-14 sm:mt-16 md:mt-20 lg:mt-24 text-center">
           <Link to="/book-appointment">
-          <button className="bg-[#FF1B6B] hover:bg-[#d11556] text-white px-8 sm:px-10 md:px-12 py-3.5 sm:py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_6px_20px_rgba(255,27,107,0.25)] active:scale-98 cursor-pointer">
-            Start Booking Now
-          </button>
+            <button className="bg-[#FF1B6B] hover:bg-[#d11556] text-white px-8 sm:px-10 md:px-12 py-3.5 sm:py-4 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 shadow-[0_6px_20px_rgba(255,27,107,0.25)] active:scale-98 cursor-pointer">
+              Start Booking Now
+            </button>
           </Link>
         </div>
       </div>

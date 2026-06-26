@@ -1,85 +1,83 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
-import {Link, useNavigate} from "react-router-dom";
-
-gsap.registerPlugin(ScrollTrigger);
+import { Link, useNavigate } from "react-router-dom";
 
 const ServicesSection = () => {
-  const sectionRef = useRef(null);
-  const cardsRef = useRef([]);
-  const [services,setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
-      useEffect(() => {
-        fetchServices();
-      }, []);
-    
-const fetchServices = async () => {
-  try {
-    const q = query(
-      collection(db, "services"),
-      orderBy("createdAt", "desc")
-    );
-
-    const snapshot = await getDocs(q);
-
-    const servicesData = snapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      .filter(
-        (service) =>
-          service.status === "Active" &&
-          service.categoryActive === true
-      )
-      .slice(0, 4);
-
-    setServices(servicesData);
-  } catch (error) {
-    console.error("Error fetching services:", error);
-  }
-};
-  
-
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".service-header", {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: ".service-header",
-          start: "top 90%",
-        }
-      });
-
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.from(card, {
-            y: 50,
-            opacity: 0,
-            duration: 0.6,
-            delay: index * 0.1,
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-            }
-          });
-        }
-      });
-    }, sectionRef);
-    return () => ctx.revert();
+    fetchServices();
   }, []);
+    
+  const fetchServices = async () => {
+    try {
+      const q = query(
+        collection(db, "services"),
+        orderBy("createdAt", "desc")
+      );
+
+      const snapshot = await getDocs(q);
+
+      const servicesData = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter(
+          (service) =>
+            service.status === "Active" &&
+            service.categoryActive === true
+        )
+        .slice(0, 4);
+
+      setServices(servicesData);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  };
+
+  // Motion animation parameters matching your design configuration specs
+  const headerVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } 
+    }
+  };
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { y: 50, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } 
+    }
+  };
 
   return (
-    <section ref={sectionRef} className="relative bg-[#0f0f0f] py-16 sm:py-20 md:py-24 px-3 sm:px-6 md:px-12 lg:px-16 z-10">
+    <section className="relative bg-[#0f0f0f] py-16 sm:py-20 md:py-24 px-3 sm:px-6 md:px-12 lg:px-16 z-10">
       
       {/* Header */}
-      <div className="service-header text-center mb-10 sm:mb-16 md:mb-20">
+      <motion.div 
+        variants={headerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="service-header text-center mb-10 sm:mb-16 md:mb-20"
+      >
         <span className="text-[#FF1B6B] text-[10px] sm:text-xs font-semibold uppercase tracking-widest block mb-2">Our Offerings</span>
         <h2 className="text-white font-bold leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-4">
           Popular <span className="text-[#FF1B6B] italic font-serif relative">Services</span>
@@ -87,14 +85,20 @@ const fetchServices = async () => {
         <p className="text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl mx-auto px-2">
           Choose from our most-loved salon services and book instantly.
         </p>
-      </div>
+      </motion.div>
 
       {/* Grid: Always 2 cards wide, upgrades to 4 cards wide on desktop (lg:) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto">
-        {services.map((service,index) => (
-          <div
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto"
+      >
+        {services.map((service) => (
+          <motion.div
             key={service.id}
-            ref={el => cardsRef.current[index] = el}
+            variants={cardVariants}
             className="group flex flex-col justify-between bg-[#1a1a1a] rounded-xl sm:rounded-2xl md:rounded-[2rem] p-2.5 sm:p-4 md:p-5 border border-white/10 shadow-2xl transition-all duration-300 hover:border-[#FF1B6B]/50 hover:-translate-y-1.5 w-full"
           >
             <div>
@@ -123,25 +127,29 @@ const fetchServices = async () => {
             </div>
 
             {/* CTA Button */}
-            <button type='button' onClick={()=>{
-                  navigate("/book-appointment", {
-  state: {
-    serviceId: service.id
-  }
-});
-                }} className="w-full py-2 sm:py-3 bg-[#FF1B6B] hover:bg-[#d11556] text-white font-bold uppercase text-[9px] sm:text-xs tracking-widest rounded-lg sm:rounded-xl cursor-pointer shadow-[0_4px_12px_rgba(255,27,107,0.2)] active:scale-98 transition-all block text-center mt-auto">
+            <button 
+              type='button' 
+              onClick={() => {
+                navigate("/book-appointment", {
+                  state: {
+                    serviceId: service.id
+                  }
+                });
+              }} 
+              className="w-full py-2 sm:py-3 bg-[#FF1B6B] hover:bg-[#d11556] text-white font-bold uppercase text-[9px] sm:text-xs tracking-widest rounded-lg sm:rounded-xl cursor-pointer shadow-[0_4px_12px_rgba(255,27,107,0.2)] active:scale-98 transition-all block text-center mt-auto"
+            >
               Book Now
             </button>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Bottom CTA */}
       <div className="mt-12 sm:mt-16 md:mt-20 text-center">
         <Link to={'/services'}>
-        <button className="px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-3.5 border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all font-bold text-[10px] sm:text-xs uppercase tracking-widest cursor-pointer">
-          View All Services
-        </button>
+          <button className="px-5 py-2.5 sm:px-6 sm:py-3 md:px-8 md:py-3.5 border border-white/20 text-white rounded-full hover:bg-white hover:text-black transition-all font-bold text-[10px] sm:text-xs uppercase tracking-widest cursor-pointer">
+            View All Services
+          </button>
         </Link>
       </div>
     </section>
