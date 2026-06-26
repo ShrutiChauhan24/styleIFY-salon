@@ -10,9 +10,6 @@ import Testimonials from '../components/user/Testimonials';
 import HomeCTA from '../components/user/HomeCTA';
 import AboutSectionHome from '../components/user/AboutSectionHome';
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const HomePage = () => {
   const location = useLocation();
