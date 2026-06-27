@@ -19,12 +19,15 @@ import AdminLogin from './pages/admin/AdminLogin';
 import ScrollToTop from './ScrollToTop';
 import {ToastContainer} from 'react-toastify';
 import ProtectedRoute from './components/ProtectedRoute';
+import Loader from './components/Loader';
 
 function App() {
+   const [loading, setLoading] = useState(true);
 
 
   return (
     <>
+   
    <ScrollToTop/>
 
     <Routes>
@@ -32,7 +35,7 @@ function App() {
      path='/'
      element={
       <LayoutWrapper>
-        <HomePage/>
+        <HomePage startAnimation={!loading}/>
       </LayoutWrapper>
      }
      />
@@ -148,7 +151,15 @@ function App() {
     </Routes>
 
     <ToastContainer/>
+
+    {loading && (
+        <Loader onComplete={() => setLoading(false)} />
+      )}
     </>
+        
+      
+    
+   
   )
 }
 

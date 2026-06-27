@@ -11,7 +11,7 @@ import HomeCTA from '../components/user/HomeCTA';
 import AboutSectionHome from '../components/user/AboutSectionHome';
 
 
-const HomePage = () => {
+const HomePage = ({startAnimation}) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const HomePage = () => {
 
   return (
     <>
-     <HeroSection/>
+     <HeroSection startAnimation={startAnimation}/>
      <ServicesSection/>
      <AboutSectionHome id="about" />
      <WhyChooseUs/>

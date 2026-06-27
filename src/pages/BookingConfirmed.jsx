@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, User, Phone, Scissors, ArrowLeft, RotateCcw } from 'lucide-react';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { formatTime12Hour } from '../helper/formatTime12Hour';
 
 const BookingConfirmed = () => {
@@ -167,15 +167,25 @@ if (!bookingDetails) {
           variants={itemVariants}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8 sm:mt-10 lg:mt-12 w-full"
         >
-          <button className="w-full sm:w-auto sm:min-w-[160px] md:min-w-[180px] lg:min-w-[200px] px-5 py-3 sm:py-3.5 md:py-4 rounded-xl border border-[#27272a] bg-[#141416] text-gray-300 hover:text-white hover:bg-[#1a1a1c] hover:border-gray-500 font-semibold text-xs sm:text-sm lg:text-base tracking-wide transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group active:scale-[0.98]">
+          <Link to={'/'}>
+          <motion.button 
+            variants={itemVariants}
+            className="w-full sm:w-auto sm:min-w-[160px] md:min-w-[180px] lg:min-w-[200px] px-5 py-3 sm:py-3.5 md:py-4 rounded-xl border border-[#27272a] bg-[#141416] text-gray-300 hover:text-white hover:bg-[#1a1a1c] hover:border-gray-500 font-semibold text-xs sm:text-sm lg:text-base tracking-wide transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer group active:scale-[0.98]"
+          >
             <ArrowLeft size={15} className="text-gray-400 group-hover:text-[#ff2e74] lg:w-5 lg:h-5 transition-colors duration-300" />
             Back Home
-          </button>
+          </motion.button>
+          </Link>
           
-          <button className="w-full sm:w-auto sm:min-w-[160px] md:min-w-[180px] lg:min-w-[200px] px-5 py-3 sm:py-3.5 md:py-4 rounded-xl bg-gradient-to-r from-[#ff2e74] to-[#e01a5c] text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-[0_10px_25px_rgba(255,46,116,0.3)] hover:shadow-[0_15px_30px_rgba(255,46,116,0.45)] hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
+          <Link to={'/book-appointment'}>
+          <motion.button 
+            variants={itemVariants}
+            className="w-full sm:w-auto sm:min-w-[160px] md:min-w-[180px] lg:min-w-[200px] px-5 py-3 sm:py-3.5 md:py-4 rounded-xl bg-gradient-to-r from-[#ff2e74] to-[#e01a5c] text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-[0_10px_25px_rgba(255,46,116,0.3)] hover:shadow-[0_15px_30px_rgba(255,46,116,0.45)] hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+          >
             <RotateCcw size={15} className="lg:w-5 lg:h-5" />
             Book Again
-          </button>
+          </motion.button>
+          </Link>
         </motion.div>
       </motion.div>
     </div>

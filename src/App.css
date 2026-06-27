@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+@theme {
+  /* Mapping dynamic keyframe rules into Tailwind v4 classes */
+  --animate-drawFluidLine: drawFluidLine 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-fadeInText: fadeInText 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-progressSlide: progressSlide 1.7s ease-in-out infinite;
+
+  @keyframes drawFluidLine {
+    0% {
+      stroke-dashoffset: 300;
+    }
+    15% {
+      stroke-dashoffset: 240; /* Starts drawing path line loop (Ref 1 & 2) */
+    }
+    50% {
+      stroke-dashoffset: 120; /* Sweeps into secondary cursive curve (Ref 3 & 4) */
+    }
+    100% {
+      stroke-dashoffset: 0;   /* Completes final connection (Ref 5 & 6) */
+    }
+  }
+
+  @keyframes fadeInText {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes progressSlide {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}

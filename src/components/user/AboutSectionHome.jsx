@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import aboutBg from "../../assets/about.jpg";
+import aboutBg from "../../assets/about.webp";
 
 // Isolated Counter Component to ensure smooth dynamic number updates on mobile
 const StatCounter = ({ target }) => {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) => Math.round(latest));
   const [displayValue, setDisplayValue] = useState(0);
+  
+  // Use a ref and useInView hook to cleanly trigger the animate function once when visible
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
     // Listens to frame updates and binds cleanly to local component state
@@ -18,16 +22,14 @@ const StatCounter = ({ target }) => {
     return () => unsubscribe();
   }, [rounded]);
 
+  useEffect(() => {
+    if (isInView) {
+      animate(count, target, { duration: 2, ease: [0.16, 1, 0.3, 1] });
+    }
+  }, [isInView, count, target]);
+
   return (
-    <motion.span
-      whileInView={{
-        custom: (() => {
-          // Triggers the frame animation once when entering mobile viewport
-          animate(count, target, { duration: 2, ease: [0.16, 1, 0.3, 1] });
-        })()
-      }}
-      viewport={{ once: true }}
-    >
+    <motion.span ref={ref}>
       {displayValue}
     </motion.span>
   );

@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-import heroBg from "../../assets/herobg.jpg";
+import heroBg from "../../assets/heroBg.webp";
 import { Link } from "react-router-dom";
 
-const HeroSection = () => {
+const HeroSection = ({startAnimation}) => {
   // Parent container variant to handle staggered orchestration of child elements
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -37,7 +37,7 @@ const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroBg})` }}
         initial={{ scale: 1.12 }}
-        animate={{ scale: 1 }}
+animate={startAnimation ? { scale: 1 } : { scale: 1.12 }}
         transition={{ duration: 4.5, ease: [0.16, 1, 0.3, 1] }}
       />
 
@@ -49,7 +49,7 @@ const HeroSection = () => {
         className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center"
         variants={containerVariants}
         initial="hidden"
-        animate="visible"
+animate={startAnimation ? "visible" : "hidden"}
       >
         
         {/* Top Tagline */}

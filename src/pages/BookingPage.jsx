@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatTime12Hour } from "../helper/formatTime12Hour";
 import {
@@ -21,8 +20,6 @@ import { addMinutes } from "../helper/addMinutes";
 import { sendBookingEmail } from "../helper/sendBookingEmail";
 
 const BookingPage = () => {
-  const containerRef = useRef(null);
-  const formCardRef = useRef(null);
   const navigate = useNavigate();
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
@@ -89,26 +86,6 @@ const BookingPage = () => {
     const yyyy = today.getFullYear();
     return `${yyyy}-${mm}-${dd}`;
   };
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline();
-
-      tl.fromTo(
-        ".animate-header-item",
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power3.out" },
-      );
-
-      tl.fromTo(
-        formCardRef.current,
-        { opacity: 0, y: 40, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 1, ease: "power4.out" },
-        "-=0.5",
-      );
-    },
-    { scope: containerRef },
-  );
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -442,33 +419,66 @@ const BookingPage = () => {
     }
   };
 
+  // Stagger configurations for standard premium transitions
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    },
+  };
+
   return (
-    <section
-      ref={containerRef}
-      className="bg-[#0b0b0b] text-white w-full font-sans antialiased min-h-screen flex flex-col pt-[5.5rem] sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-28 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24"
-    >
+    <section className="bg-[#0b0b0b] text-white w-full font-sans antialiased min-h-screen flex flex-col pt-[5.5rem] sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-28 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24">
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center my-auto">
-        {/* TOP HERO / HEADER HEADER */}
-        <div className="text-center max-w-3xl mx-auto flex flex-col items-center mb-8 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-20">
-          <span className="animate-header-item text-[10px] sm:text-xs xl:text-sm tracking-[0.25em] uppercase text-[#e91e63] font-semibold bg-[#e91e63]/5 border border-[#e91e63]/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4">
+        
+        {/* TOP HERO / HEADER */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="text-center max-w-3xl mx-auto flex flex-col items-center mb-8 sm:mb-12 md:mb-14 lg:mb-16 xl:mb-20"
+        >
+          <motion.span
+            variants={itemVariants}
+            className="text-[10px] sm:text-xs xl:text-sm tracking-[0.25em] uppercase text-[#e91e63] font-semibold bg-[#e91e63]/5 border border-[#e91e63]/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full mb-3 sm:mb-4"
+          >
             Reservations
-          </span>
-          <h1 className="animate-header-item text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light tracking-tight text-stone-100">
+          </motion.span>
+          <motion.h1
+            variants={itemVariants}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light tracking-tight text-stone-100"
+          >
             Book Your{" "}
             <span className="font-normal text-[#e91e63]">Appointment</span>
-          </h1>
-          <p className="animate-header-item text-stone-400 text-xs sm:text-sm md:text-base xl:text-lg font-light leading-relaxed mt-2 sm:mt-4 px-2 max-w-2xl">
+          </motion.h1>
+          <motion.p
+            variants={itemVariants}
+            className="text-stone-400 text-xs sm:text-sm md:text-base xl:text-lg font-light leading-relaxed mt-2 sm:mt-4 px-2 max-w-2xl"
+          >
             Choose your service, preferred date, and time to reserve your slot.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* TWO-COLUMN EMBEDDED LAYOUT CONTAINER FRAME */}
-        <form
+        <motion.form
           onSubmit={handleSubmit}
-          ref={formCardRef}
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
           className="w-full bg-[#121212] rounded-xl sm:rounded-2xl xl:rounded-3xl border border-stone-900/80 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden grid grid-cols-1 lg:grid-cols-12"
         >
-          {/* LEFT PANEL COLUMN: DYNAMIC FLOW INTERACTIVE FORM (7 COLUMNS) */}
+          {/* LEFT PANEL PANEL: FORM CONTAINER (7 COLUMNS) */}
           <div className="lg:col-span-7 p-5 sm:p-8 md:p-10 xl:p-14 space-y-6 sm:space-y-8 md:space-y-10 border-b lg:border-b-0 lg:border-r border-stone-900">
             {/* STEP 1: SERVICE DROPDOWN SELECTION */}
             <div className="flex flex-col gap-2 sm:gap-3">
@@ -498,27 +508,36 @@ const BookingPage = () => {
                 </div>
               </div>
 
-              {/* Dynamic Service Sub-data Tag Info Block */}
-              {selectedService && (
-                <div className="mt-1 bg-stone-950/40 border border-stone-900/60 rounded-xl p-3 sm:p-4 flex justify-between items-center text-stone-400">
-                  <div className="flex flex-col">
-                    <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
-                      Duration
-                    </span>
-                    <span className="text-xs sm:text-sm md:text-base xl:text-lg text-stone-300 font-light mt-0.5">
-                      {selectedService?.duration}
-                    </span>
-                  </div>
-                  <div className="flex flex-col text-right">
-                    <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
-                      Price
-                    </span>
-                    <span className="text-xs sm:text-sm md:text-base xl:text-lg text-[#e91e63] font-semibold mt-0.5">
-                      ₹{selectedService?.price}
-                    </span>
-                  </div>
-                </div>
-              )}
+              {/* Dynamic Service Info Box */}
+              <AnimatePresence mode="wait">
+                {selectedService && (
+                  <motion.div
+                    key={selectedService.id}
+                    initial={{ opacity: 0, height: 0, y: -10 }}
+                    animate={{ opacity: 1, height: "auto", y: 0 }}
+                    exit={{ opacity: 0, height: 0, y: -10 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className="mt-1 bg-stone-950/40 border border-stone-900/60 rounded-xl p-3 sm:p-4 flex justify-between items-center text-stone-400 overflow-hidden"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
+                        Duration
+                      </span>
+                      <span className="text-xs sm:text-sm md:text-base xl:text-lg text-stone-300 font-light mt-0.5">
+                        {selectedService?.duration} mins
+                      </span>
+                    </div>
+                    <div className="flex flex-col text-right">
+                      <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
+                        Price
+                      </span>
+                      <span className="text-xs sm:text-sm md:text-base xl:text-lg text-[#e91e63] font-semibold mt-0.5">
+                        ₹{selectedService?.price}
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* STEP 2: SELECT DATE INPUT CONTAINER */}
@@ -536,39 +555,46 @@ const BookingPage = () => {
               />
             </div>
 
+            {/* STEP 3: TIME SLOTS GRID CONTAINER */}
             <div className="flex flex-col gap-2 sm:gap-3">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase">
                 Step 3: Select Time Slot
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-                {timeSlots.map((slot) => {
-                  const isSelected = selectedTime === slot.time;
-                  const isDisabled =
-                    slot.status === "booked" || slot.status === "blocked";
+                <AnimatePresence mode="popLayout">
+                  {timeSlots.map((slot, index) => {
+                    const isSelected = selectedTime === slot.time;
+                    const isDisabled =
+                      slot.status === "booked" || slot.status === "blocked";
 
-                  return (
-                    <button
-                      key={slot.time}
-                      type="button"
-                      disabled={isDisabled}
-                      onClick={() => setSelectedTime(slot.time)}
-                      className={`py-2.5 sm:py-3 xl:py-3.5 rounded-xl font-mono text-center text-xs sm:text-sm xl:text-base tracking-wide transition-all duration-300 cursor-pointer border
-                        ${
-                          isSelected
-                            ? "bg-[#e91e63] text-white border-[#e91e63] shadow-[0_4px_12px_rgba(233,30,99,0.3)] scale-[1.02]"
-                            : isDisabled
-                              ? "bg-stone-900/40 border-stone-900/60 text-stone-600 line-through cursor-not-allowed"
-                              : "bg-[#181818] border-stone-850 text-stone-400 hover:text-stone-100 hover:border-stone-700"
-                        }`}
-                    >
-                      {formatTime12Hour(slot.time)}
-                    </button>
-                  );
-                })}
+                    return (
+                      <motion.button
+                        key={slot.time}
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => setSelectedTime(slot.time)}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3, delay: Math.min(index * 0.03, 0.2) }}
+                        className={`py-2.5 sm:py-3 xl:py-3.5 rounded-xl font-mono text-center text-xs sm:text-sm xl:text-base tracking-wide transition-all duration-300 cursor-pointer border
+                          ${
+                            isSelected
+                              ? "bg-[#e91e63] text-white border-[#e91e63] shadow-[0_4px_12px_rgba(233,30,99,0.3)] scale-[1.02]"
+                              : isDisabled
+                                ? "bg-stone-900/40 border-stone-900/60 text-stone-600 line-through cursor-not-allowed"
+                                : "bg-[#181818] border-stone-850 text-stone-400 hover:text-stone-100 hover:border-stone-700"
+                          }`}
+                      >
+                        {formatTime12Hour(slot.time)}
+                      </motion.button>
+                    );
+                  })}
+                </AnimatePresence>
               </div>
             </div>
 
-            {/* STEP 4: CUSTOMER MINIMAL INFO CONTROLS METRICS */}
+            {/* STEP 4: CUSTOMER DETAILS CONTROLS */}
             <div className="flex flex-col gap-4">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase border-b border-stone-900 pb-2">
                 Step 4: Customer Details
@@ -619,7 +645,7 @@ const BookingPage = () => {
             </div>
           </div>
 
-          {/* RIGHT PANEL COLUMN: PREMIUM REAL-TIME BOOKING SUMMARY OVERLAY (5 COLUMNS) */}
+          {/* RIGHT PANEL COLUMN: BOOKING SUMMARY PANEL (5 COLUMNS) */}
           <div className="lg:col-span-5 bg-[#161616] p-5 sm:p-8 md:p-10 xl:p-14 flex flex-col justify-between gap-10 lg:gap-0">
             <div className="space-y-6 sm:space-y-8">
               <div className="border-b border-stone-900 pb-3 sm:pb-4 flex items-center justify-between">
@@ -629,7 +655,7 @@ const BookingPage = () => {
                 <span className="w-2 h-2 rounded-full bg-[#e91e63] shadow-[0_0_10px_#e91e63]" />
               </div>
 
-              {/* Dynamic Values Stack Node Pipeline */}
+              {/* Summary Items Stack */}
               <div className="space-y-3 sm:space-y-4 font-light">
                 <div className="flex flex-col bg-[#121212]/40 p-3 sm:p-4 rounded-xl border border-stone-900/60">
                   <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
@@ -669,13 +695,13 @@ const BookingPage = () => {
                     Duration Estimate
                   </span>
                   <span className="text-stone-300 text-xs sm:text-sm xl:text-base mt-1 font-normal">
-                    {selectedService?.duration || "---"}
+                    {selectedService ? `${selectedService.duration} mins` : "---"}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Total Pricing Calculation & CTA Button Block */}
+            {/* Pricing Section & Submit Button Container */}
             <div className="pt-5 sm:pt-6 border-t border-stone-900 space-y-4 sm:space-y-6">
               <div className="flex items-baseline justify-between">
                 <span className="text-xs sm:text-sm xl:text-base font-light text-stone-400">
@@ -689,18 +715,18 @@ const BookingPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full py-3 rounded-xl font-semibold transition-all
-    ${
-      loading
-        ? "bg-gray-500 cursor-not-allowed opacity-70"
-        : "bg-pink-600 hover:bg-pink-700"
-    }`}
+                className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 shadow-[0_4px_12px_rgba(233,30,99,0.2)] hover:shadow-[0_6px_20px_rgba(233,30,99,0.35)] active:scale-[0.99] cursor-pointer
+                  ${
+                    loading
+                      ? "bg-gray-500 cursor-not-allowed opacity-70"
+                      : "bg-[#e91e63] hover:bg-[#d81b60] text-white"
+                  }`}
               >
                 {loading ? "Booking..." : "Confirm Booking"}
               </button>
             </div>
           </div>
-        </form>
+        </motion.form>
       </div>
     </section>
   );
