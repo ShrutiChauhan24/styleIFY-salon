@@ -89,7 +89,7 @@ animate={startAnimation ? "visible" : "hidden"}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-[#E5336D] text-white font-medium text-sm sm:text-base rounded-full shadow-lg hover:bg-pink-500 transition-colors duration-300"
+            className="w-full cursor-pointer sm:w-auto px-6 sm:px-8 py-3 bg-[#E5336D] text-white font-medium text-sm sm:text-base rounded-full shadow-lg hover:bg-pink-500 transition-colors duration-300"
           >
             Book Now
           </motion.button>
@@ -105,7 +105,7 @@ animate={startAnimation ? "visible" : "hidden"}
   }}
   whileTap={{ scale: 0.98 }}
   transition={{ type: "spring", stiffness: 400, damping: 25 }}
-  className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-transparent text-white border border-white/20 font-medium text-sm sm:text-base rounded-full tracking-wide transition-colors duration-300 relative overflow-hidden group"
+  className="w-full cursor-pointer sm:w-auto px-6 sm:px-8 py-3 bg-transparent text-white border border-white/20 font-medium text-sm sm:text-base rounded-full tracking-wide transition-colors duration-300 relative overflow-hidden group"
 >
   {/* Elegant slide-in background color block */}
   <span className="absolute inset-0 w-full h-full bg-[#E5336D]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
