@@ -419,7 +419,6 @@ const BookingPage = () => {
     }
   };
 
-  // Stagger configurations for standard premium transitions
   const containerVariants = {
     hidden: {},
     visible: {
@@ -442,7 +441,7 @@ const BookingPage = () => {
     <section className="bg-[#0b0b0b] text-white w-full font-sans antialiased min-h-screen flex flex-col pt-[5.5rem] sm:pt-24 md:pt-28 lg:pt-32 xl:pt-36 pb-12 sm:pb-16 md:pb-20 lg:pb-24 xl:pb-28 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24">
       <div className="max-w-7xl mx-auto w-full flex flex-col items-center my-auto">
         
-        {/* TOP HERO / HEADER */}
+    
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -470,7 +469,6 @@ const BookingPage = () => {
           </motion.p>
         </motion.div>
 
-        {/* TWO-COLUMN EMBEDDED LAYOUT CONTAINER FRAME */}
         <motion.form
           onSubmit={handleSubmit}
           initial={{ opacity: 0, y: 40, scale: 0.98 }}
@@ -478,9 +476,9 @@ const BookingPage = () => {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
           className="w-full bg-[#121212] rounded-xl sm:rounded-2xl xl:rounded-3xl border border-stone-900/80 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] overflow-hidden grid grid-cols-1 lg:grid-cols-12"
         >
-          {/* LEFT PANEL PANEL: FORM CONTAINER (7 COLUMNS) */}
+          
           <div className="lg:col-span-7 p-5 sm:p-8 md:p-10 xl:p-14 space-y-6 sm:space-y-8 md:space-y-10 border-b lg:border-b-0 lg:border-r border-stone-900">
-            {/* STEP 1: SERVICE DROPDOWN SELECTION */}
+         
             <div className="flex flex-col gap-2 sm:gap-3">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase">
                 Step 1: Select Service
@@ -508,7 +506,6 @@ const BookingPage = () => {
                 </div>
               </div>
 
-              {/* Dynamic Service Info Box */}
               <AnimatePresence mode="wait">
                 {selectedService && (
                   <motion.div
@@ -540,7 +537,7 @@ const BookingPage = () => {
               </AnimatePresence>
             </div>
 
-            {/* STEP 2: SELECT DATE INPUT CONTAINER */}
+      
             <div className="flex flex-col gap-2 sm:gap-3">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase">
                 Step 2: Select Date
@@ -555,7 +552,6 @@ const BookingPage = () => {
               />
             </div>
 
-            {/* STEP 3: TIME SLOTS GRID CONTAINER */}
             <div className="flex flex-col gap-2 sm:gap-3">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase">
                 Step 3: Select Time Slot
@@ -594,7 +590,7 @@ const BookingPage = () => {
               </div>
             </div>
 
-            {/* STEP 4: CUSTOMER DETAILS CONTROLS */}
+        
             <div className="flex flex-col gap-4">
               <label className="text-[10px] sm:text-xs xl:text-sm font-semibold tracking-widest text-[#e91e63] uppercase border-b border-stone-900 pb-2">
                 Step 4: Customer Details
@@ -645,7 +641,7 @@ const BookingPage = () => {
             </div>
           </div>
 
-          {/* RIGHT PANEL COLUMN: BOOKING SUMMARY PANEL (5 COLUMNS) */}
+          
           <div className="lg:col-span-5 bg-[#161616] p-5 sm:p-8 md:p-10 xl:p-14 flex flex-col justify-between gap-10 lg:gap-0">
             <div className="space-y-6 sm:space-y-8">
               <div className="border-b border-stone-900 pb-3 sm:pb-4 flex items-center justify-between">
@@ -655,7 +651,6 @@ const BookingPage = () => {
                 <span className="w-2 h-2 rounded-full bg-[#e91e63] shadow-[0_0_10px_#e91e63]" />
               </div>
 
-              {/* Summary Items Stack */}
               <div className="space-y-3 sm:space-y-4 font-light">
                 <div className="flex flex-col bg-[#121212]/40 p-3 sm:p-4 rounded-xl border border-stone-900/60">
                   <span className="text-[9px] sm:text-[10px] xl:text-xs text-stone-500 uppercase tracking-wider font-mono">
@@ -701,7 +696,7 @@ const BookingPage = () => {
               </div>
             </div>
 
-            {/* Pricing Section & Submit Button Container */}
+       
             <div className="pt-5 sm:pt-6 border-t border-stone-900 space-y-4 sm:space-y-6">
               <div className="flex items-baseline justify-between">
                 <span className="text-xs sm:text-sm xl:text-base font-light text-stone-400">
