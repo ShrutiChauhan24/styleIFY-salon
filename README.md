@@ -53,11 +53,18 @@ StyleIFY is a salon appointment booking web application built with React and Fir
 ```text
 styleIFY-salon/
 ├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── pages/
-│   └── ...
+├──src/
+ ├── assets/
+ ├── components/
+ ├── context/
+ ├── helper/
+ ├── layout/
+ ├── pages/
+ ├── App.css
+ ├── App.jsx
+ ├── ScrollToTop.jsx
+ ├── firebase.js
+ └── main.jsx
 ├── .gitignore
 ├── index.html
 ├── package.json
