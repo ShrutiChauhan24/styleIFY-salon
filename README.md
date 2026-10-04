@@ -1,16 +1,123 @@
-# React + Vite
+# StyleIFY Salon – Appointment Booking System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StyleIFY is a salon appointment booking web application built with React and Firebase. Developed as a business website demo, it allows customers to explore salon services and book appointments, while providing an admin interface to manage salon operations.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* **Website:** [StyleIFY Salon](https://style-ify-salon.vercel.app)
+* **GitHub Repository:** [StyleIFY Salon](https://github.com/ShrutiChauhan24/styleIFY-salon)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Browse salon services and details
+* User authentication with Firebase Authentication
+* Appointment booking system
+* Booking management
+* Admin dashboard
+* Add, edit and delete salon services
+* Manage appointments through the admin interface
+* Responsive user interface
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**Frontend**
+
+* React.js
+* JavaScript
+* Vite
+* Tailwind CSS 
+* Framer Motion
+
+**Backend / Services**
+
+* Firebase Authentication
+* Cloud Firestore
+
+## Screenshots
+
+*Add screenshots of the actual application here.*
+
+### Homepage
+
+![StyleIFY Homepage](public/Homepage.png)
+
+### Services
+
+![StyleIFY Services](public/Services.png)
+
+### Appointment Booking
+
+![StyleIFY Booking](public/BookingForm.png)
+
+
+## Project Structure
+
+```text
+styleIFY-salon/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   └── ...
+├── .gitignore
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+
+* Node.js
+* npm
+* Firebase project configuration
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/ShrutiChauhan24/styleIFY-salon.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd styleIFY-salon
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+# Firebase Configuration
+
+StyleIFY uses Firebase Authentication and Cloud Firestore.
+
+The Firebase web app configuration is defined in firebase.js and is used to initialize Firebase services.
+
+To run the project with your own Firebase setup:
+
+Create a project in the Firebase Console.
+Register a web app and enable Firebase Authentication and Cloud Firestore.
+Update the Firebase configuration in firebase.js with your project's web app configuration.
+Configure appropriate Firestore Security Rules and authorized domains.
+
+Firebase web app configuration is intended for client-side use. Protect your Firebase resources with proper security rules and API key restrictions where appropriate. Never expose Firebase Admin SDK service-account credentials or private keys.
+
+## Developer
+
+**Shruti Chauhan**
+Self-Taught Full-Stack MERN Developer
+
