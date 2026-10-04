@@ -35,8 +35,6 @@ StyleIFY is a salon appointment booking web application built with React and Fir
 
 ## Screenshots
 
-*Add screenshots of the actual application here.*
-
 ### Homepage
 
 ![StyleIFY Homepage](public/Homepage.png)
