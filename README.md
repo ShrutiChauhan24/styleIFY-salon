@@ -124,5 +124,5 @@ Firebase web app configuration is intended for client-side use. Protect your Fir
 ## Developer
 
 **Shruti Chauhan**
-Self-Taught Full-Stack MERN Developer
+Full-Stack MERN Developer
 
